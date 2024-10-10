@@ -4,42 +4,56 @@ public class Hangman {
     private String Word;
     private String Hidden_Word;
     private String Hint;
-    private String Guessed_Char;
-    private ArrayList<String> Used_Chars = new ArrayList<String>();
+    private final ArrayList<String> Used_Chars = new ArrayList<String>();
+    private final ArrayList<String> Used_Words = new ArrayList<String>();
 
     public boolean Guess_Taken(String Guess) {
-        if (Used_Chars.contains(Guess)) {
-            System.out.println("You've already guessed that letter.");
-            return false;
-        } else {
-            Guess = Guess.toUpperCase();
+        Guess = Guess.toUpperCase();
 
-            if (Guess.length() > 1) {
-                if (Guess.equals(Word)) {
-                    return true;
-                } else {
-                    System.out.println("Incorrect! Wrong Word: " + Guess);
-                    return false;
-                }
-            } else if(Guess.matches(".*\\d.*") || Guess.matches(".*[!@#$%^&*()].*")) {
-                System.out.println("Invalid input! Please enter a letter.");
+        if (Guess.length() > 1) {
+            if (Guess.equals(Word)) {
+                return true;
+
+            } else if (!Guess.matches("[A-Z]+")) { // Only allow single alphabetic characters
+                System.out.println("Invalid Input! \nOnly single alphabetic characters are allowed! \n");
+                return false;
+
+            } else {
+                Used_Words.add(Guess);
+                System.out.println("\nIncorrect! Wrong Word: " + Guess
+                        + "\nAlready used letters: " + Used_Chars
+                        + "\nAlready used words: " + Used_Words
+                        + "\n");
                 return false;
             }
 
-            Used_Chars.add(Guess);
-
-            if (Word.contains(Guess)) {
-                // Replace the _ with the guessed letter
-                for (int i = 0; i < Word.length(); i++) {
-                    if (Word.charAt(i) == Guess.charAt(0)) {
-                        Hidden_Word = Hidden_Word.substring(0, i) + Guess + Hidden_Word.substring(i + 1);
-                    }
-                }
-                System.out.println(Hidden_Word);
-            } else {
-                System.out.println("Incorrect! Wrong Letter: " + Guess);
-            }
+        } else if (!Guess.matches("[A-Z]")) { // Only allow single alphabetic characters
+            System.out.println("Invalid Input! \nOnly single alphabetic characters are allowed! \n");
+            return false;
         }
+
+        if (Used_Chars.contains(Guess)) {
+            System.out.println("You've already guessed that letter.");
+            return false;
+        }
+
+        if (Word.contains(Guess)) {
+            // Replace the _ with the guessed letter
+            for (int i = 0; i < Word.length(); i++) {
+                if (Word.charAt(i) == Guess.charAt(0)) {
+                    Hidden_Word = Hidden_Word.substring(0, i) + Guess + Hidden_Word.substring(i + 1);
+                }
+            }
+            System.out.println(Hidden_Word);
+        } else {
+            Used_Chars.add(Guess);
+            System.out.println("\nIncorrect! Wrong Letter: " + Guess
+                    + "\nAlready used letters: " + Used_Chars
+                    + "\nAlready used words: " + Used_Words
+                    + "\n");
+            return false;
+        }
+
         return Hidden_Word.equals(Word);
     }
 
