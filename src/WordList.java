@@ -7,7 +7,7 @@ public enum WordList {
     APPLIKATIONSENTWICKLER,
     MOTORRAD,
     BAUMHAUS,
-    KNAPP_AG,
+    KNAPPAG,
     VERFLUCHT,
     BERUFSSCHULE,
     PARKPLATZ;
